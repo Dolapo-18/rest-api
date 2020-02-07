@@ -3,7 +3,7 @@ This is a simple REST API Authentication that performs CRUD operations in PHP - 
 
 As we know, JWT-JSON Web Token is an internet standard that defines a compact way of securely transmitting information between parties
 as JSON object.
-The information that is being trtansmitted can be trusted because it is digitally signed using a secret key with HMAC algorithm. Example,
+The information that is being transmitted can be trusted because it is digitally signed using a secret key with HMAC algorithm. Example,
 a server could generate a token with a claim "User Logged In" to a client, the client will then use that token to verify it is logged in
 as a user.
 
