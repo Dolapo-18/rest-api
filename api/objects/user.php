@@ -140,34 +140,21 @@
 
 
 		public function delete() {
-
-			$query = "SELECT id, firstname, lastname, password FROM " . $this->table_name . " WHERE email = ? LIMIT 0,1";
-			$stmt = $this->conn->prepare($query);
-
-			//bind given email value
-			$stmt->bindParam(1, $this->email);
-
-			//execute query
-			$stmt->execute();
-
-			//get number of rows
-			$num = $stmt->rowCount();
-
-			if ($num > 0) {
+			
 					
-				$delete_query = "DELETE FROM " . $this->table_name . " WHERE id = :id";
+				$delete_query = "DELETE FROM " . $this->table_name . " WHERE id = ?";
 
 				$stmt = $this->conn->prepare($delete_query);
 
-				$stmt->bindParam(':id', $this->id);
-				
+				// sanitize
+    			$this->id=htmlspecialchars(strip_tags($this->id));
+
+				// bind id of record to delete
+    			$stmt->bindParam(1, $this->id);
+
 				if ($stmt->execute()) {
 					return true;
-				} 
-			} else {
-
-				return false;
-			}
+				}
 
 
 			return false;

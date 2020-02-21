@@ -35,6 +35,7 @@
 
 		http_response_code(200);
 		echo json_encode(array("mesage" => "User Created Successfully"));
+		
 	} else {
 
 		http_response_code(400);

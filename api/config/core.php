@@ -3,7 +3,6 @@
 	//show error reporting
 	error_reporting(E_ALL);
 
-
 	//variables for jwt
 	$key = "my_secret"; //this is used to sign the JWT payload
 	$iss = "localhost";	//issuer application

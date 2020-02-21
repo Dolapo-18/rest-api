@@ -32,19 +32,19 @@
 
 			//response
 			http_response_code(200);
+
 			echo json_encode(array(
 						"message" => "Access Granted",
 						"data" => $decoded->data
-
 					));
 
 		} catch (Exception $e) {
 			
 			http_response_code(401);
+
 			echo json_encode(array(
 						"message" => "Access Denied",
 						"error" => $e->getMessage()
-
 					));
 		}
 
@@ -52,11 +52,8 @@
 	} else {
 
 		http_response_code(401);
+		
 		echo json_encode(array("message" => "Access Denied"));
 	}
-
-
-
-
 
  ?>

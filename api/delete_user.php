@@ -15,6 +15,7 @@
 	include_once 'libs/php_jwt/src/ExpiredException.php';
 	include_once 'libs/php_jwt/src/SignatureInvalidException.php';
 	include_once 'libs/php_jwt/src/JWT.php';
+	
 	use \Firebase\JWT\JWT;
 
 
@@ -31,41 +32,25 @@
 	//Retrieve JWT
 	$data = json_decode(file_get_contents("php://input"));
 
-	$jwt = isset($data->jwt) ? $data->jwt : "";
+	$user->id = $data->id;
 
-	if ($jwt) {
+
+	if ($user->delete()) {
 		
-		$decode = JWT::decode($jwt, $key, array('HS256'));
-
-		if ($user->delete()) {
-			
-			//make token null JWT
-				$token = array(
-					"iss" => null,
-					"aud" => null,
-					"iat" => null,
-					"nbf" => null,
-					"data" => array(
-						"id" => null,
-						"firstname" => null,
-						"lastname" => null,
-						"email" => null
-						));
-
-
-				//set response
-				http_response_code(200);
-				echo json_encode(array(
-					"message" => "User Deleted Successfully"
-				));
-		} else {
-
-			http_response_code(401);
+			//set response
+			http_response_code(200);
 			echo json_encode(array(
-				"message" => "Cannot Delete User"
+				"message" => "User Deleted Successfully"
 			));
-		}
+
+	} else {
+
+		http_response_code(401);
+		echo json_encode(array(
+			"message" => "Cannot Delete User"
+		));
 	}
+
 
 
  ?>
