@@ -36,19 +36,11 @@
 			$this->password = htmlspecialchars(strip_tags($this->password));
 
 
-			//bind the values
-			$stmt->bindParam(':firstname', $this->firstname);
-			$stmt->bindParam(':lastname', $this->lastname);
-			$stmt->bindParam(':email', $this->email);
-			$stmt->bindParam(':password', $this->password);
-
-
 			//hash our password for better security
 			$password_hash = password_hash($this->password, PASSWORD_BCRYPT);
-			$stmt->bindParam(':password', $password_hash);
 
 			//execute query
-			if ($stmt->execute()) {
+			if ($stmt->execute(['firstname' => $this->firstname, 'lastname' => $this->lastname, 'email' => $this->email, 'password' => $password_hash])) {
 				return true;
 			}
 
@@ -60,7 +52,7 @@
 		//check if email exist
 		public function emailExists() {
 
-			$query = "SELECT id, firstname, lastname, password FROM " . $this->table_name . " WHERE email = ? LIMIT 0,1";
+			$query = "SELECT id, firstname, lastname, password FROM " . $this->table_name . " WHERE email = :email LIMIT 0,1";
 
 
 			$stmt = $this->conn->prepare($query);
@@ -69,10 +61,10 @@
 			$this->email = htmlspecialchars(strip_tags($this->email));
 
 			//bind given email value
-			$stmt->bindParam(1, $this->email);
+			//$stmt->bindParam(1, $this->email);
 
 			//execute query
-			$stmt->execute();
+			$stmt->execute(['email' => $this->email]);
 
 			//get number of rows
 			$num = $stmt->rowCount();
@@ -113,23 +105,16 @@
 			$this->lastname = htmlspecialchars(strip_tags($this->lastname));
 			$this->email = htmlspecialchars(strip_tags($this->email));
 
-			//bind
-			$stmt->bindParam(':firstname', $this->firstname);
-			$stmt->bindParam(':lastname', $this->lastname);
-			$stmt->bindParam(':email', $this->email);
 
 			//hash password before saving to DB
 			if (!empty($this->password)) {
 				$this->password = htmlspecialchars(strip_tags($this->password));
 				$password_hash = password_hash($this->password, PASSWORD_BCRYPT);
-				$stmt->bindParam(':password', $password_hash);
 			}
 
-			//unique id
-			$stmt->bindParam(':id', $this->id);
 
 			//execute query
-			if ($stmt->execute()) {
+			if ($stmt->execute(['firstname' => $this->firstname, 'lastname' => $this->lastname, 'email' => $this->email, 'password' => $password_hash, 'id' => $this->id])) {
 				return true;
 			}
 
@@ -142,17 +127,17 @@
 		public function delete() {
 			
 					
-				$delete_query = "DELETE FROM " . $this->table_name . " WHERE id = ?";
+				$delete_query = "DELETE FROM " . $this->table_name . " WHERE id = :id";
 
 				$stmt = $this->conn->prepare($delete_query);
 
 				// sanitize
-    			$this->id=htmlspecialchars(strip_tags($this->id));
+    			$this->id = htmlspecialchars(strip_tags($this->id));
 
 				// bind id of record to delete
-    			$stmt->bindParam(1, $this->id);
+    			//$stmt->bindParam(1, $this->id);
 
-				if ($stmt->execute()) {
+				if ($stmt->execute(['id' => $this->id])) {
 					return true;
 				}
 
